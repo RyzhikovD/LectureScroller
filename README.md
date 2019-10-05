@@ -1,0 +1,2 @@
+# LecturesSpinner
+Simple spinner
