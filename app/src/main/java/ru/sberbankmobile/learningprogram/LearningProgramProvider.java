@@ -45,6 +45,22 @@ public class LearningProgramProvider {
             new Lecture("32", "07.12.2019", "Финал", "Соколов")
     );
 
+    private List<String> mGroupTypes = Arrays.asList("Не группировать", "Группировать по неделям");
+
+    private List<String> mWeekNames = Arrays.asList(
+            "Неделя 1",
+            "Неделя 2",
+            "Неделя 3",
+            "Неделя 4",
+            "Неделя 5",
+            "Неделя 6",
+            "Неделя 7",
+            "Неделя 8",
+            "Неделя 9",
+            "Неделя 10",
+            "Неделя 11"
+    );
+
     public List<Lecture> provideLectures() {
         return mLectures;
     }
@@ -55,6 +71,14 @@ public class LearningProgramProvider {
             lecturersSet.add(lecture.getLecturer());
         }
         return new ArrayList<>(lecturersSet);
+    }
+
+    public List<String> provideGroupTypes() {
+        return new ArrayList<>(mGroupTypes);
+    }
+
+    public List<String> provideWeekNames() {
+        return new ArrayList<>(mWeekNames);
     }
 
     public List<Lecture> filterBy(String lecturer) {

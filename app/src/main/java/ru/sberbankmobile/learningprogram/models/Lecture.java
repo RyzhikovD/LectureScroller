@@ -3,10 +3,14 @@ package ru.sberbankmobile.learningprogram.models;
 import androidx.annotation.NonNull;
 
 public class Lecture {
+
+    private static final int LECTURES_PER_WEEK = 3;
+
     private final String mNumber;
     private final String mDate;
     private final String mTheme;
     private final String mLecturer;
+    private final int weekIndex;
 
     public Lecture(
             @NonNull String mNumber,
@@ -18,6 +22,7 @@ public class Lecture {
         this.mDate = mDate;
         this.mTheme = mTheme;
         this.mLecturer = mLecturer;
+        this.weekIndex = (Integer.parseInt(mNumber) - 1) / LECTURES_PER_WEEK;
     }
 
     public String getNumber() {
@@ -34,5 +39,9 @@ public class Lecture {
 
     public String getLecturer() {
         return mLecturer;
+    }
+
+    public int getWeekIndex() {
+        return weekIndex;
     }
 }
