@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">LearningProgram</string>
     <string name="all">Все</string>
+    <string name="do_not_group">Не группировать</string>
+    <string name="group_by_week">Группировать по неделям</string>
+
+    <string-array name="week_names">
+        <item>Неделя 1</item>
+        <item>Неделя 2</item>
+        <item>Неделя 3</item>
+        <item>Неделя 4</item>
+        <item>Неделя 5</item>
+        <item>Неделя 6</item>
+        <item>Неделя 7</item>
+        <item>Неделя 8</item>
+        <item>Неделя 9</item>
+        <item>Неделя 10</item>
+        <item>Неделя 11</item>
+    </string-array>
 </resources>

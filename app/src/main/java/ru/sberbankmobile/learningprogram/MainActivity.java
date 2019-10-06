@@ -13,19 +13,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Collections;
 import java.util.List;
 
+import ru.sberbankmobile.learningprogram.adapters.GroupingSpinnerAdapter;
+import ru.sberbankmobile.learningprogram.adapters.LecturerSpinnerAdapter;
+import ru.sberbankmobile.learningprogram.adapters.LecturesAdapter;
 import ru.sberbankmobile.learningprogram.models.Lecture;
+import ru.sberbankmobile.learningprogram.providers.LearningProgramProvider;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int POSITION_ALL = 0;
 
-    private LearningProgramProvider mLearningProgramProvider = new LearningProgramProvider();
-    private LearningProgramAdapter mAdapter;
+    private LearningProgramProvider mLearningProgramProvider;
+    private LecturesAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mLearningProgramProvider = new LearningProgramProvider(getResources());
         initRecyclerView(savedInstanceState == null);
         initGroupDividerSpinner();
         initSpinner();
@@ -34,16 +39,15 @@ public class MainActivity extends AppCompatActivity {
     private void initGroupDividerSpinner() {
         Spinner divider = findViewById(R.id.group_divider);
         final List<String> groupTypes = mLearningProgramProvider.provideGroupTypes();
-        divider.setAdapter(new WeekSpinnerAdapter(groupTypes));
+        divider.setAdapter(new GroupingSpinnerAdapter(groupTypes));
 
         divider.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String groupType = groupTypes.get(position);
-                if (position == LearningProgramAdapter.LECTURE_TYPE) {
+                if (position == LecturesAdapter.LECTURE_TYPE) {
                     mAdapter.groupByWeek(false);
                     mAdapter.notifyDataSetChanged();
-                } else if (position == LearningProgramAdapter.WEEK_TYPE) {
+                } else if (position == LecturesAdapter.WEEK_TYPE) {
                     mAdapter.groupByWeek(true);
                     mAdapter.notifyDataSetChanged();
                 }
@@ -88,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.learning_program_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new LearningProgramAdapter();
+        mAdapter = new LecturesAdapter();
         mAdapter.setLectures(mLearningProgramProvider.provideLectures());
         mAdapter.setWeekNames(mLearningProgramProvider.provideWeekNames());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);

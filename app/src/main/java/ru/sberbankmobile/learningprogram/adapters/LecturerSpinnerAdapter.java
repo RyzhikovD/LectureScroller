@@ -1,4 +1,4 @@
-package ru.sberbankmobile.learningprogram;
+package ru.sberbankmobile.learningprogram.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,21 +10,22 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-public class WeekSpinnerAdapter extends BaseAdapter {
-    private final List<String> mGroupTypes;
+public class LecturerSpinnerAdapter extends BaseAdapter {
 
-    public WeekSpinnerAdapter(@NonNull List<String> groupTypes) {
-        this.mGroupTypes = groupTypes;
+    private final List<String> mLecturers;
+
+    public LecturerSpinnerAdapter(@NonNull List<String> lecturers) {
+        this.mLecturers = lecturers;
     }
 
     @Override
     public int getCount() {
-        return mGroupTypes.size();
+        return mLecturers.size();
     }
 
     @Override
     public String getItem(int position) {
-        return mGroupTypes.get(position);
+        return mLecturers.get(position);
     }
 
     @Override
@@ -36,19 +37,19 @@ public class WeekSpinnerAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
-            WeekSpinnerAdapter.ViewHolder viewHolder = new WeekSpinnerAdapter.ViewHolder(convertView);
+            ViewHolder viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }
-        WeekSpinnerAdapter.ViewHolder holder = (WeekSpinnerAdapter.ViewHolder) convertView.getTag();
-        holder.mGroupType.setText(getItem(position));
+        ViewHolder holder = (ViewHolder) convertView.getTag();
+        holder.mLecturerName.setText(getItem(position));
         return convertView;
     }
 
     private class ViewHolder {
-        private final TextView mGroupType;
+        private final TextView mLecturerName;
 
         private ViewHolder(View view) {
-            mGroupType = view.findViewById(android.R.id.text1);
+            mLecturerName = view.findViewById(android.R.id.text1);
         }
     }
 }

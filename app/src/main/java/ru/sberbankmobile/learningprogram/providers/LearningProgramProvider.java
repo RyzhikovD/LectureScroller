@@ -1,4 +1,6 @@
-package ru.sberbankmobile.learningprogram;
+package ru.sberbankmobile.learningprogram.providers;
+
+import android.content.res.Resources;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,9 +8,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ru.sberbankmobile.learningprogram.R;
 import ru.sberbankmobile.learningprogram.models.Lecture;
 
 public class LearningProgramProvider {
+
+    private Resources mResources;
 
     private List<Lecture> mLectures = Arrays.asList(
             new Lecture("1", "24.09.2019", "Вводное занятие", "Соколов"),
@@ -45,21 +50,9 @@ public class LearningProgramProvider {
             new Lecture("32", "07.12.2019", "Финал", "Соколов")
     );
 
-    private List<String> mGroupTypes = Arrays.asList("Не группировать", "Группировать по неделям");
-
-    private List<String> mWeekNames = Arrays.asList(
-            "Неделя 1",
-            "Неделя 2",
-            "Неделя 3",
-            "Неделя 4",
-            "Неделя 5",
-            "Неделя 6",
-            "Неделя 7",
-            "Неделя 8",
-            "Неделя 9",
-            "Неделя 10",
-            "Неделя 11"
-    );
+    public LearningProgramProvider(Resources resources) {
+        mResources = resources;
+    }
 
     public List<Lecture> provideLectures() {
         return mLectures;
@@ -74,11 +67,12 @@ public class LearningProgramProvider {
     }
 
     public List<String> provideGroupTypes() {
-        return new ArrayList<>(mGroupTypes);
+        return Arrays.asList(mResources.getString(R.string.do_not_group), mResources.getString(R.string.group_by_week));
     }
 
     public List<String> provideWeekNames() {
-        return new ArrayList<>(mWeekNames);
+        String[] mWeekNames = mResources.getStringArray(R.array.week_names);
+        return new ArrayList<>(Arrays.asList(mWeekNames));
     }
 
     public List<Lecture> filterBy(String lecturer) {

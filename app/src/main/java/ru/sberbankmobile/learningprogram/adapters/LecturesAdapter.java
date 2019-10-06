@@ -1,4 +1,4 @@
-package ru.sberbankmobile.learningprogram;
+package ru.sberbankmobile.learningprogram.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +15,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import ru.sberbankmobile.learningprogram.R;
 import ru.sberbankmobile.learningprogram.models.Lecture;
 
-public class LearningProgramAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class LecturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String DATE_FORMAT = "dd.MM.yyyy";
 

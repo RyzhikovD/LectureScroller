@@ -1,4 +1,4 @@
-package ru.sberbankmobile.learningprogram;
+package ru.sberbankmobile.learningprogram.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,22 +10,21 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-public class LecturerSpinnerAdapter extends BaseAdapter {
+public class GroupingSpinnerAdapter extends BaseAdapter {
+    private final List<String> mGroupTypes;
 
-    private final List<String> mLecturers;
-
-    public LecturerSpinnerAdapter(@NonNull List<String> lecturers) {
-        this.mLecturers = lecturers;
+    public GroupingSpinnerAdapter(@NonNull List<String> groupTypes) {
+        this.mGroupTypes = groupTypes;
     }
 
     @Override
     public int getCount() {
-        return mLecturers.size();
+        return mGroupTypes.size();
     }
 
     @Override
     public String getItem(int position) {
-        return mLecturers.get(position);
+        return mGroupTypes.get(position);
     }
 
     @Override
@@ -37,19 +36,19 @@ public class LecturerSpinnerAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
-            ViewHolder viewHolder = new ViewHolder(convertView);
+            GroupingSpinnerAdapter.ViewHolder viewHolder = new GroupingSpinnerAdapter.ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }
-        ViewHolder holder = (ViewHolder) convertView.getTag();
-        holder.mLecturerName.setText(getItem(position));
+        GroupingSpinnerAdapter.ViewHolder holder = (GroupingSpinnerAdapter.ViewHolder) convertView.getTag();
+        holder.mGroupType.setText(getItem(position));
         return convertView;
     }
 
     private class ViewHolder {
-        private final TextView mLecturerName;
+        private final TextView mGroupType;
 
         private ViewHolder(View view) {
-            mLecturerName = view.findViewById(android.R.id.text1);
+            mGroupType = view.findViewById(android.R.id.text1);
         }
     }
 }
