@@ -8,12 +8,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import ru.sberbankmobile.learningprogram.models.Lecture;
 
 public class LearningProgramAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final String DATE_FORMAT = "dd.MM.yyyy";
+
+    private boolean groupByWeek;
 
     public static final int LECTURE_TYPE = 0;
     public static final int WEEK_TYPE = 1;
@@ -21,11 +29,9 @@ public class LearningProgramAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private List<Lecture> mLectures;
     private List<String> mWeekNames;
     private List<Object> mLecturesAndWeeks;
-    private boolean groupByWeek;
 
     @Override
     public int getItemViewType(int position) {
-//        return groupByWeek ? LECTURE_TYPE : WEEK_TYPE;
         return mLecturesAndWeeks.get(position) instanceof Lecture ? LECTURE_TYPE : WEEK_TYPE;
     }
 
@@ -64,11 +70,6 @@ public class LearningProgramAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-//        if (groupByWeek) {
-//            return mWeekNames == null ? 0 : mWeekNames.size();
-//        } else {
-//            return mLectures == null ? 0 : mLectures.size();
-//        }
         return mLecturesAndWeeks == null ? 0 : mLecturesAndWeeks.size();
     }
 
@@ -121,5 +122,21 @@ public class LearningProgramAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             super(itemView);
             weekName = itemView.findViewById(R.id.week_name);
         }
+    }
+
+    public int getNextLectureIndex() {
+        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+        for (Lecture lecture : mLectures) {
+            try {
+                Date lectureDate = format.parse(lecture.getDate());
+                Date currentDate = new Date();
+                if (lectureDate != null && lectureDate.after(currentDate)) {
+                    return mLecturesAndWeeks.indexOf(lecture);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
     }
 }

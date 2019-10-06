@@ -10,10 +10,10 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-public class GroupDividerAdapter extends BaseAdapter {
+public class WeekSpinnerAdapter extends BaseAdapter {
     private final List<String> mGroupTypes;
 
-    public GroupDividerAdapter(@NonNull List<String> groupTypes) {
+    public WeekSpinnerAdapter(@NonNull List<String> groupTypes) {
         this.mGroupTypes = groupTypes;
     }
 
@@ -36,10 +36,10 @@ public class GroupDividerAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
-            GroupDividerAdapter.ViewHolder viewHolder = new GroupDividerAdapter.ViewHolder(convertView);
+            WeekSpinnerAdapter.ViewHolder viewHolder = new WeekSpinnerAdapter.ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }
-        GroupDividerAdapter.ViewHolder holder = (GroupDividerAdapter.ViewHolder) convertView.getTag();
+        WeekSpinnerAdapter.ViewHolder holder = (WeekSpinnerAdapter.ViewHolder) convertView.getTag();
         holder.mGroupType.setText(getItem(position));
         return convertView;
     }

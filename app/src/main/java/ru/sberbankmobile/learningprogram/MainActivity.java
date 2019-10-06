@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initRecyclerView();
+        initRecyclerView(savedInstanceState == null);
         initGroupDividerSpinner();
         initSpinner();
     }
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private void initGroupDividerSpinner() {
         Spinner divider = findViewById(R.id.group_divider);
         final List<String> groupTypes = mLearningProgramProvider.provideGroupTypes();
-        divider.setAdapter(new GroupDividerAdapter(groupTypes));
+        divider.setAdapter(new WeekSpinnerAdapter(groupTypes));
 
         divider.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void initRecyclerView() {
+    private void initRecyclerView(boolean firstStart) {
         RecyclerView recyclerView = findViewById(R.id.learning_program_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -94,5 +94,9 @@ public class MainActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(mAdapter);
+        if (firstStart) {
+            recyclerView.scrollToPosition(mAdapter.getNextLectureIndex());
+        }
     }
+
 }
