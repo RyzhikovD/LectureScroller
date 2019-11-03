@@ -20,10 +20,12 @@ import java.util.List;
 import ru.sberbankmobile.learningprogram.adapters.GroupingSpinnerAdapter;
 import ru.sberbankmobile.learningprogram.adapters.LecturerSpinnerAdapter;
 import ru.sberbankmobile.learningprogram.adapters.LecturesAdapter;
+import ru.sberbankmobile.learningprogram.adapters.OnItemClickListener;
+import ru.sberbankmobile.learningprogram.fragments.DetailsFragment;
 import ru.sberbankmobile.learningprogram.models.Lecture;
 import ru.sberbankmobile.learningprogram.providers.LearningProgramProvider;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnItemClickListener {
 
     private static final int POSITION_ALL = 0;
 
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new LecturesAdapter();
+        mAdapter = new LecturesAdapter(this);
         mAdapter.setLectures(mLearningProgramProvider.provideLectures());
         mAdapter.setWeekNames(mLearningProgramProvider.provideWeekNames());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
@@ -110,6 +112,14 @@ public class MainActivity extends AppCompatActivity {
         if (isFirstStart) {
             recyclerView.scrollToPosition(mAdapter.getNextLectureIndex());
         }
+    }
+
+    @Override
+    public void onClick(Lecture lecture) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.root, DetailsFragment.newInstance(lecture))
+                .addToBackStack(DetailsFragment.class.getSimpleName())
+                .commit();
     }
 
     private static class LoadLecturesTask extends AsyncTask<Void, Void, List<Lecture>> {

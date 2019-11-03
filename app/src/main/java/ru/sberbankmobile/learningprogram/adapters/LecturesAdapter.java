@@ -31,6 +31,12 @@ public class LecturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<String> mWeekNames;
     private List<Object> mLecturesAndWeeks;
 
+    private OnItemClickListener mClickListener;
+
+    public LecturesAdapter(OnItemClickListener clickListener) {
+        mClickListener = clickListener;
+    }
+
     @Override
     public int getItemViewType(int position) {
         return mLecturesAndWeeks.get(position) instanceof Lecture ? LECTURE_TYPE : WEEK_TYPE;
@@ -61,6 +67,8 @@ public class LecturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 lectureHolder.mLecturer.setText(lecture.getLecturer());
                 lectureHolder.mTheme.setText(lecture.getTheme());
                 lectureHolder.mDate.setText(lecture.getDate());
+
+                lectureHolder.setClickListener(lecture);
                 break;
             case WEEK_TYPE:
                 WeekHolder weekHolder = (WeekHolder) holder;
@@ -101,18 +109,27 @@ public class LecturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         setLectures(mLectures);
     }
 
-    private static class LectureHolder extends RecyclerView.ViewHolder {
+    private class LectureHolder extends RecyclerView.ViewHolder {
         private final TextView mNumber;
         private final TextView mDate;
         private final TextView mTheme;
         private final TextView mLecturer;
 
-        private LectureHolder(@NonNull View itemView) {
+        private LectureHolder(@NonNull final View itemView) {
             super(itemView);
             mNumber = itemView.findViewById(R.id.number);
             mDate = itemView.findViewById(R.id.date);
             mTheme = itemView.findViewById(R.id.theme);
             mLecturer = itemView.findViewById(R.id.lecturer);
+        }
+
+        private void setClickListener(final Lecture lecture) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mClickListener.onClick(lecture);
+                }
+            });
         }
     }
 

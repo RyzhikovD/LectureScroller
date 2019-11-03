@@ -56,6 +56,6 @@ public class Lecture {
     }
 
     public List<String> getSubtopics() {
-        return mSubtopics;
+        return mSubtopics == null ? null : new ArrayList<>(mSubtopics);
     }
 }
