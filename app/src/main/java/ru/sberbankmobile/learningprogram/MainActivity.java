@@ -1,15 +1,19 @@
 package ru.sberbankmobile.learningprogram;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,9 +35,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mLearningProgramProvider = new LearningProgramProvider(getResources());
-        initRecyclerView(savedInstanceState == null);
-        initGroupDividerSpinner();
-        initSpinner();
+        if (mLearningProgramProvider.provideLectures() != null) {
+            initRecyclerView(savedInstanceState == null);
+            initGroupDividerSpinner();
+            initSpinner();
+        } else {
+            new LoadLecturesTask(this, savedInstanceState == null).execute();
+        }
     }
 
     private void initGroupDividerSpinner() {
@@ -88,19 +96,51 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void initRecyclerView(boolean firstStart) {
+    private void initRecyclerView(boolean isFirstStart) {
         RecyclerView recyclerView = findViewById(R.id.learning_program_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
+
         mAdapter = new LecturesAdapter();
         mAdapter.setLectures(mLearningProgramProvider.provideLectures());
         mAdapter.setWeekNames(mLearningProgramProvider.provideWeekNames());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(mAdapter);
-        if (firstStart) {
+        if (isFirstStart) {
             recyclerView.scrollToPosition(mAdapter.getNextLectureIndex());
         }
     }
 
+    private static class LoadLecturesTask extends AsyncTask<Void, Void, List<Lecture>> {
+        private final WeakReference<MainActivity> mMainActivityReference;
+        private final LearningProgramProvider mProvider;
+        private final boolean mIsFirstStart;
+
+        private LoadLecturesTask(@NonNull MainActivity mainActivity, boolean isFirstStart) {
+            mMainActivityReference = new WeakReference<>(mainActivity);
+            mProvider = mainActivity.mLearningProgramProvider;
+            mIsFirstStart = isFirstStart;
+        }
+
+        @Override
+        protected List<Lecture> doInBackground(Void... arg) {
+            return mProvider.loadLecturesFromWeb();
+        }
+
+        @Override
+        protected void onPostExecute(List<Lecture> lectures) {
+            MainActivity mainActivity = mMainActivityReference.get();
+            if (mainActivity == null) {
+                return;
+            }
+            if (lectures == null) {
+                Toast.makeText(mainActivity.getApplicationContext(), R.string.failed_to_load_lectures, Toast.LENGTH_SHORT).show();
+            } else {
+                mainActivity.initRecyclerView(mIsFirstStart);
+                mainActivity.initGroupDividerSpinner();
+                mainActivity.initSpinner();
+            }
+        }
+    }
 }

@@ -3,6 +3,7 @@
     <string name="all">Все</string>
     <string name="do_not_group">Не группировать</string>
     <string name="group_by_week">Группировать по неделям</string>
+    <string name="failed_to_load_lectures">Не удалось загрузить список лекций</string>
 
     <string-array name="week_names">
         <item>Неделя 1</item>

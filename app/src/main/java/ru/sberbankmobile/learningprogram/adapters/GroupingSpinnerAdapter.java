@@ -14,7 +14,7 @@ public class GroupingSpinnerAdapter extends BaseAdapter {
     private final List<String> mGroupTypes;
 
     public GroupingSpinnerAdapter(@NonNull List<String> groupTypes) {
-        this.mGroupTypes = groupTypes;
+        mGroupTypes = groupTypes;
     }
 
     @Override

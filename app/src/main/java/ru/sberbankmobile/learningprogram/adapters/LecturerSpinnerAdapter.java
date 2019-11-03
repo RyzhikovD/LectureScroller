@@ -15,7 +15,7 @@ public class LecturerSpinnerAdapter extends BaseAdapter {
     private final List<String> mLecturers;
 
     public LecturerSpinnerAdapter(@NonNull List<String> lecturers) {
-        this.mLecturers = lecturers;
+        mLecturers = lecturers;
     }
 
     @Override

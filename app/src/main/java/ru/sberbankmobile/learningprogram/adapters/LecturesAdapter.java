@@ -22,7 +22,7 @@ public class LecturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private static final String DATE_FORMAT = "dd.MM.yyyy";
 
-    private boolean groupByWeek;
+    private boolean mGroupByWeek;
 
     public static final int LECTURE_TYPE = 0;
     public static final int WEEK_TYPE = 1;
@@ -64,7 +64,7 @@ public class LecturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 break;
             case WEEK_TYPE:
                 WeekHolder weekHolder = (WeekHolder) holder;
-                weekHolder.weekName.setText((String) mLecturesAndWeeks.get(position));
+                weekHolder.mWeekName.setText((String) mLecturesAndWeeks.get(position));
                 break;
         }
     }
@@ -77,7 +77,7 @@ public class LecturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void setLectures(List<Lecture> lectures) {
         mLectures = lectures;
         mLecturesAndWeeks = new ArrayList<>();
-        if (groupByWeek) {
+        if (mGroupByWeek) {
             int weekIndex = -1;
             for (Lecture lecture : lectures) {
                 if (lecture.getWeekIndex() > weekIndex) {
@@ -87,17 +87,17 @@ public class LecturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         } else {
             if (lectures != null) {
-                mLecturesAndWeeks.addAll(lectures);
+                mLecturesAndWeeks = new ArrayList<Object>(lectures);
             }
         }
     }
 
-    public void setWeekNames(List<String> mWeekNames) {
-        this.mWeekNames = mWeekNames;
+    public void setWeekNames(List<String> weekNames) {
+        mWeekNames = weekNames;
     }
 
     public void groupByWeek(boolean groupByWeek) {
-        this.groupByWeek = groupByWeek;
+        mGroupByWeek = groupByWeek;
         setLectures(mLectures);
     }
 
@@ -117,11 +117,11 @@ public class LecturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private static class WeekHolder extends RecyclerView.ViewHolder {
-        private final TextView weekName;
+        private final TextView mWeekName;
 
         private WeekHolder(@NonNull View itemView) {
             super(itemView);
-            weekName = itemView.findViewById(R.id.week_name);
+            mWeekName = itemView.findViewById(R.id.week_name);
         }
     }
 
