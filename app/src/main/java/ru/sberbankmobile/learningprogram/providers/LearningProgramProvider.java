@@ -22,13 +22,7 @@ import ru.sberbankmobile.learningprogram.models.Lecture;
 public class LearningProgramProvider {
 
     private static final String LECTURES_URL = "http://landsovet.ru/learning_program.json";
-
-    private Resources mResources;
     private List<Lecture> mLectures;
-
-    public LearningProgramProvider(Resources resources) {
-        mResources = resources;
-    }
 
     public List<Lecture> provideLectures() {
         return mLectures;
@@ -42,12 +36,12 @@ public class LearningProgramProvider {
         return new ArrayList<>(lecturersSet);
     }
 
-    public List<String> provideGroupTypes() {
-        return Arrays.asList(mResources.getString(R.string.do_not_group), mResources.getString(R.string.group_by_week));
+    public List<String> provideGroupTypes(Resources resources) {
+        return Arrays.asList(resources.getString(R.string.do_not_group), resources.getString(R.string.group_by_week));
     }
 
-    public List<String> provideWeekNames() {
-        String[] mWeekNames = mResources.getStringArray(R.array.week_names);
+    public List<String> provideWeekNames(Resources resources) {
+        String[] mWeekNames = resources.getStringArray(R.array.week_names);
         return new ArrayList<>(Arrays.asList(mWeekNames));
     }
 

@@ -31,7 +31,7 @@ public class LecturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<String> mWeekNames;
     private List<Object> mLecturesAndWeeks;
 
-    private OnItemClickListener mClickListener;
+    private final OnItemClickListener mClickListener;
 
     public LecturesAdapter(OnItemClickListener clickListener) {
         mClickListener = clickListener;
@@ -95,7 +95,7 @@ public class LecturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         } else {
             if (lectures != null) {
-                mLecturesAndWeeks = new ArrayList<Object>(lectures);
+                mLecturesAndWeeks = new ArrayList<>(lectures);
             }
         }
     }
@@ -124,12 +124,7 @@ public class LecturesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         private void setClickListener(final Lecture lecture) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mClickListener.onClick(lecture);
-                }
-            });
+            itemView.setOnClickListener(view -> mClickListener.onClick(lecture));
         }
     }
 
